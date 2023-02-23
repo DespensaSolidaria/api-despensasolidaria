@@ -1,3 +1,7 @@
 import fs from "fs";
 
-export const deleteFile = async (filename: string) => {};
+function deleteFile(filename: string): void {
+  if (fs.existsSync(filename)) fs.unlinkSync(filename);
+}
+
+export { deleteFile };
