@@ -11,7 +11,7 @@ import { v4 as uuidV4 } from "uuid";
 
 import { User } from "./User";
 
-@Entity("biometrias_usuarios")
+@Entity("biometrias")
 class UserBiometry {
   @PrimaryColumn()
   id: string;
@@ -23,6 +23,13 @@ class UserBiometry {
   @JoinColumn({ name: "id_usuario" })
   usuario: User;
 
+  /* @Column()
+  id_ponto_doacao: string;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "id_ponto_doacao" })
+  ponto_doacao: DonatePoint; */
+
   @Column()
   codigo_biometria: string;
 
@@ -30,10 +37,10 @@ class UserBiometry {
   status: number;
 
   @CreateDateColumn()
-  created_at: Date;
+  criado_em: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  atualizado_em: Date;
 
   constructor() {
     if (!this.id) {

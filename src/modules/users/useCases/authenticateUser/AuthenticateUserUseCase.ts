@@ -10,8 +10,8 @@ import { validateEmail } from "@utils/validateEmail";
 
 interface IRequest {
   email: string;
-  password: string;
-  scope: string;
+  senha: string;
+  escopo: string;
 }
 
 interface IResponse {
@@ -30,10 +30,10 @@ class AuthenticateUserUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute({ email, password, scope }: IRequest): Promise<IResponse> {
-    if (!scope) throw new AppError("Escopo de trabalho desconhecido!", 404, 2);
+  async execute({ email, senha, escopo }: IRequest): Promise<IResponse> {
+    if (!escopo) throw new AppError("Escopo de trabalho desconhecido!", 404, 2);
 
-    if (scope !== "BACKOFFICE" && scope !== "APP")
+    if (escopo !== "ADMIN" && escopo !== "USUARIO")
       throw new AppError("Escopo de trabalho desconhecido!", 404, 2);
 
     const { expires_in_token, secret_token } = auth;
@@ -45,12 +45,12 @@ class AuthenticateUserUseCase {
 
     const user = await this.usersRepository.findByEmailAndScope(
       formattedEmail,
-      scope
+      escopo
     );
 
     if (!user) throw new AppError("E-mail e/ou senha incorretos!", 401, 2);
 
-    const passwordMatch = await compare(password, user.senha);
+    const passwordMatch = await compare(senha, user.senha);
 
     if (!passwordMatch)
       throw new AppError("E-mail e/ou senha incorretos!", 401, 2);

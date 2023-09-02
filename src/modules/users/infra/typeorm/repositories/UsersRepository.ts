@@ -16,7 +16,7 @@ class UsersRepository implements IUsersRepository {
   async create({
     nome,
     nomePreferencial,
-    cpfcnpj,
+    documento,
     dataNascimento,
     email,
     senha,
@@ -27,7 +27,7 @@ class UsersRepository implements IUsersRepository {
     const user = this.repository.create({
       nome,
       nome_preferencial: nomePreferencial,
-      cpfcnpj,
+      documento,
       data_nascimento: dataNascimento,
       email,
       senha,
@@ -62,8 +62,8 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  async findByDocument(cpfcnpj: string): Promise<IUserResponseDTO> {
-    const user = await this.repository.findOne({ cpfcnpj });
+  async findByDocument(documento: string): Promise<IUserResponseDTO> {
+    const user = await this.repository.findOne({ documento });
     return user;
   }
 

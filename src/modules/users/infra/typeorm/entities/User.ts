@@ -19,7 +19,7 @@ class User {
   nome_preferencial: string;
 
   @Column()
-  cpfcnpj: string;
+  documento: string;
 
   @Column({ type: "date" })
   data_nascimento: Date;
@@ -40,10 +40,10 @@ class User {
   status: number;
 
   @CreateDateColumn()
-  created_at: Date;
+  criado_em: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  atualizado_em: Date;
 
   constructor() {
     if (!this.id) {

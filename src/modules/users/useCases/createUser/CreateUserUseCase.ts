@@ -1,9 +1,13 @@
 import { hash } from "bcrypt";
 import { inject, injectable } from "tsyringe";
 
-import { ICreateUserDTO } from "@modules/accounts/dtos/ICreateUserDTO";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { ICreateUserDTO } from "@modules/users/dtos/ICreateUserDTO";
+import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { AppError } from "@shared/errors/AppError";
+import { filterString } from "@utils/filterString";
+import { formatDocument, formatEmail } from "@utils/formatters";
+import { validateDate } from "@utils/validateDate";
+import { validateCNPJ, validateCPF } from "@utils/validateDocument";
 
 @injectable()
 class CreateUserUseCase {
@@ -13,24 +17,58 @@ class CreateUserUseCase {
   ) {}
 
   async execute({
-    name,
+    nome,
+    nomePreferencial,
+    documento,
+    dataNascimento,
     email,
-    password,
-    driver_license,
+    senha,
+    escopo,
   }: ICreateUserDTO): Promise<void> {
-    const userAlreadyExists = await this.usersRepository.findByEmail(email);
+    const formattedDocument = formatDocument(documento);
+    const validatedDocument =
+      formattedDocument.length <= 11
+        ? validateCPF(formattedDocument)
+        : validateCNPJ(formattedDocument);
+
+    if (!validatedDocument)
+      throw new AppError(
+        "O número do documento informado é inválido!",
+        422,
+        10
+      );
+
+    const birthDateValid = validateDate(dataNascimento);
+
+    if (!birthDateValid)
+      throw new AppError("A data de nascimento informada é inválida!", 422, 11);
+
+    const formattedEmail = formatEmail(email);
+
+    const userAlreadyExists = await this.usersRepository.findByEmail(
+      formattedEmail
+    );
 
     if (userAlreadyExists) {
-      throw new AppError("User already exists");
+      throw new AppError(
+        "E-mail informado já utilizado anteriormente!",
+        409,
+        11
+      );
     }
 
-    const passwordHash = await hash(password, 8);
+    const passwordHash = await hash(senha, 8);
 
     await this.usersRepository.create({
-      name,
-      email,
-      password: passwordHash,
-      driver_license,
+      nome: filterString(nome),
+      nomePreferencial: filterString(nomePreferencial),
+      documento: formattedDocument,
+      dataNascimento,
+      email: formattedEmail,
+      senha: passwordHash,
+      escopo,
+      nivel: 2,
+      status: 1,
     });
   }
 }

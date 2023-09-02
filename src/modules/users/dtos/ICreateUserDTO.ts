@@ -1,8 +1,8 @@
 interface ICreateUserDTO {
   nome: string;
   nomePreferencial: string;
-  cpfcnpj: string;
-  dataNascimento: Date;
+  documento: string;
+  dataNascimento: string;
   email: string;
   senha: string;
   escopo?: string;
