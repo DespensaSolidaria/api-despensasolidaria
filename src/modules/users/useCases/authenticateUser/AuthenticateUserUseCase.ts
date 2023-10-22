@@ -11,7 +11,6 @@ import { validateEmail } from "@utils/validateEmail";
 interface IRequest {
   email: string;
   senha: string;
-  escopo: string;
 }
 
 interface IResponse {
@@ -30,12 +29,7 @@ class AuthenticateUserUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute({ email, senha, escopo }: IRequest): Promise<IResponse> {
-    if (!escopo) throw new AppError("Escopo de trabalho desconhecido!", 404, 2);
-
-    if (escopo !== "ADMIN" && escopo !== "USUARIO")
-      throw new AppError("Escopo de trabalho desconhecido!", 404, 2);
-
+  async execute({ email, senha }: IRequest): Promise<IResponse> {
     const { expires_in_token, secret_token } = auth;
 
     const formattedEmail = formatEmail(email);
@@ -43,17 +37,20 @@ class AuthenticateUserUseCase {
     if (!validateEmail(formattedEmail))
       throw new AppError("E-mail e/ou senha incorretos!", 401, 2);
 
-    const user = await this.usersRepository.findByEmailAndScope(
-      formattedEmail,
-      escopo
-    );
+    const user = await this.usersRepository.findByEmail(formattedEmail);
 
     if (!user) throw new AppError("E-mail e/ou senha incorretos!", 401, 2);
+
+    if (user.nivel !== 1 && user.nivel !== 2)
+      throw new AppError("E-mail e/ou senha incorretos!", 401, 2);
 
     const passwordMatch = await compare(senha, user.senha);
 
     if (!passwordMatch)
       throw new AppError("E-mail e/ou senha incorretos!", 401, 2);
+
+    if (user.status !== 1)
+      throw new AppError("Operação não permitida!", 403, 1);
 
     const token = sign({}, secret_token, {
       subject: user.id,

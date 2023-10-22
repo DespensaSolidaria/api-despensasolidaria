@@ -20,7 +20,6 @@ class UsersRepository implements IUsersRepository {
     dataNascimento,
     email,
     senha,
-    escopo,
     nivel,
     status,
   }: ICreateUserDTO): Promise<IUserResponseDTO> {
@@ -31,7 +30,6 @@ class UsersRepository implements IUsersRepository {
       data_nascimento: dataNascimento,
       email,
       senha,
-      escopo,
       nivel,
       status,
     });
@@ -51,14 +49,6 @@ class UsersRepository implements IUsersRepository {
 
   async findByEmail(email: string): Promise<IUserResponseDTO> {
     const user = await this.repository.findOne({ email });
-    return user;
-  }
-
-  async findByEmailAndScope(
-    email: string,
-    scope: string
-  ): Promise<IUserResponseDTO> {
-    const user = await this.repository.findOne({ email, escopo: scope });
     return user;
   }
 

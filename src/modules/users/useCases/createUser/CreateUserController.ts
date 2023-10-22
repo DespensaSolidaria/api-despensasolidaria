@@ -12,7 +12,7 @@ class CreateUserController {
       data_nascimento,
       email,
       senha,
-      escopo,
+      nivel,
     } = request.body;
 
     const createUserUseCase = container.resolve(CreateUserUseCase);
@@ -24,7 +24,7 @@ class CreateUserController {
       dataNascimento: data_nascimento,
       email,
       senha,
-      escopo,
+      nivel,
     });
 
     return response.status(201).send();

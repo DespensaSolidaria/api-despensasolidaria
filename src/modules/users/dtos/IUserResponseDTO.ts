@@ -6,7 +6,6 @@ interface IUserResponseDTO {
   data_nascimento: Date;
   email: string;
   senha: string;
-  escopo: string;
   nivel: number;
   status: number;
   criado_em: Date;

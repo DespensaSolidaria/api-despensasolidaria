@@ -9,6 +9,8 @@ import {
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
 
+import { DonatePoint } from "@modules/donatePoint/infra/typeorm/entities/DonatePoint";
+
 import { User } from "./User";
 
 @Entity("biometrias")
@@ -23,12 +25,12 @@ class UserBiometry {
   @JoinColumn({ name: "id_usuario" })
   usuario: User;
 
-  /* @Column()
+  @Column()
   id_ponto_doacao: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: "id_ponto_doacao" })
-  ponto_doacao: DonatePoint; */
+  ponto_doacao: DonatePoint;
 
   @Column()
   codigo_biometria: string;

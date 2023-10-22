@@ -23,7 +23,7 @@ class CreateUserUseCase {
     dataNascimento,
     email,
     senha,
-    escopo,
+    nivel,
   }: ICreateUserDTO): Promise<void> {
     const formattedDocument = formatDocument(documento);
     const validatedDocument =
@@ -57,7 +57,17 @@ class CreateUserUseCase {
       );
     }
 
-    const passwordHash = await hash(senha, 8);
+    if ((nivel === 1 || nivel === 2) && !senha)
+      throw new AppError(
+        "Uma senha deve ser informada para o usuário!",
+        422,
+        13
+      );
+
+    let passwordHash: string;
+
+    if (nivel !== 1 && nivel !== 2) passwordHash = null;
+    else passwordHash = await hash(senha, 8);
 
     await this.usersRepository.create({
       nome: filterString(nome),
@@ -66,8 +76,7 @@ class CreateUserUseCase {
       dataNascimento,
       email: formattedEmail,
       senha: passwordHash,
-      escopo,
-      nivel: 2,
+      nivel,
       status: 1,
     });
   }

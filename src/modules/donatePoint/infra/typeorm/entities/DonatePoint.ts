@@ -7,31 +7,46 @@ import {
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
 
-@Entity("usuarios")
-class User {
+@Entity("pontos_doacao")
+class DonatePoint {
   @PrimaryColumn()
   id: string;
 
   @Column()
-  nome: string;
+  tipo_ponto_doacao: string;
 
   @Column()
-  nome_preferencial: string;
+  logradouro: string;
 
   @Column()
-  documento: string;
-
-  @Column({ type: "date" })
-  data_nascimento: Date;
+  numero: string;
 
   @Column()
-  email: string;
+  complemento: string;
 
   @Column()
-  senha: string;
+  bairro: string;
 
   @Column()
-  nivel: number;
+  cidade: string;
+
+  @Column()
+  uf: string;
+
+  @Column()
+  cep: string;
+
+  @Column()
+  referencia_endereco: string;
+
+  @Column()
+  descricao: string;
+
+  @Column()
+  client_id: string;
+
+  @Column()
+  client_secret: string;
 
   @Column()
   status: number;
@@ -49,4 +64,4 @@ class User {
   }
 }
 
-export { User };
+export { DonatePoint };

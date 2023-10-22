@@ -5,7 +5,6 @@ interface ICreateUserDTO {
   dataNascimento: string;
   email: string;
   senha: string;
-  escopo?: string;
   nivel?: number;
   status?: number;
   id?: string;

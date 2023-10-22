@@ -15,13 +15,13 @@ class UsersBiometricsRepository implements IUsersBiometricsRepository {
 
   async create({
     idUsuario,
-    // idPontoDoacao,
+    idPontoDoacao,
     codigoBiometria,
     status,
   }: ICreateUserBiometryDTO): Promise<IUserBiometryResponseDTO> {
     const userBiometry = this.repository.create({
       id_usuario: idUsuario,
-      // id_ponto_doacao: idPontoDoacao,
+      id_ponto_doacao: idPontoDoacao,
       codigo_biometria: codigoBiometria,
       status,
     });

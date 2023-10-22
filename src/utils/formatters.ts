@@ -5,8 +5,15 @@ function formatDocument(document: string): string {
     .trim();
 }
 
+function formatCEP(cep: string): string {
+  return cep
+    .replace(/\.|-|\//gm, "")
+    .replace(/\s/g, "")
+    .trim();
+}
+
 function formatEmail(email: string): string {
   return email.replace(/\s/g, "").toLowerCase().trim();
 }
 
-export { formatDocument, formatEmail };
+export { formatDocument, formatCEP, formatEmail };

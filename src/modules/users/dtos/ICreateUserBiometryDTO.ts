@@ -1,9 +1,8 @@
 interface ICreateUserBiometryDTO {
   idUsuario: string;
-  // idPontoDoacao: string;
+  idPontoDoacao: string;
   codigoBiometria: string;
-  dataNascimento: Date;
-  status: number;
+  status?: number;
 }
 
 export { ICreateUserBiometryDTO };
