@@ -1,4 +1,3 @@
-import { hash } from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
@@ -33,10 +32,7 @@ class CreateDonatePointUseCase {
     if (formattedTipoPontoDoacao !== "G" && formattedTipoPontoDoacao !== "Q")
       throw new AppError("Tipo de ponto de doação inválido!", 422, 12);
 
-    const clientId = uuidV4();
-    const clientSecret = uuidV4();
-
-    const clientSecretHash = await hash(clientSecret, 8);
+    const tokenAcesso = uuidV4();
 
     const createdDonatePoint = await this.donatePointsRepository.create({
       tipoPontoDoacao: formattedTipoPontoDoacao,
@@ -51,14 +47,12 @@ class CreateDonatePointUseCase {
         ? filterString(referenciaEndereco)
         : null,
       descricao: descricao.trim(),
-      clientId,
-      clientSecret: clientSecretHash,
+      tokenAcesso,
     });
 
     return {
       id: createdDonatePoint.id,
-      client_id: clientId,
-      client_secret: clientSecret,
+      token_acesso: tokenAcesso,
     };
   }
 }

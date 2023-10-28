@@ -43,10 +43,7 @@ class DonatePoint {
   descricao: string;
 
   @Column()
-  client_id: string;
-
-  @Column()
-  client_secret: string;
+  token_acesso: string;
 
   @Column()
   status: number;

@@ -9,6 +9,10 @@ interface IUsersBiometricsRepository {
   ): Promise<void>;
   findByUserId(userId: string): Promise<IUserBiometryResponseDTO[]>;
   findById(id: string): Promise<IUserBiometryResponseDTO>;
+  findByDonatePointIdAndBiometryCode(
+    donatePointId: string,
+    biometryCode: string
+  ): Promise<IUserBiometryResponseDTO>;
 }
 
 export { IUsersBiometricsRepository };

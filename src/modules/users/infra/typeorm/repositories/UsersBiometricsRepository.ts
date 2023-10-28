@@ -47,6 +47,17 @@ class UsersBiometricsRepository implements IUsersBiometricsRepository {
     const userBiometry = await this.repository.findOne(id);
     return userBiometry;
   }
+
+  async findByDonatePointIdAndBiometryCode(
+    donatePointId: string,
+    biometryCode: string
+  ): Promise<IUserBiometryResponseDTO> {
+    const userBiometry = await this.repository.findOne({
+      id_ponto_doacao: donatePointId,
+      codigo_biometria: biometryCode,
+    });
+    return userBiometry;
+  }
 }
 
 export { UsersBiometricsRepository };

@@ -9,8 +9,7 @@ interface ICreateDonatePointDTO {
   cep: string;
   referenciaEndereco: string;
   descricao: string;
-  clientId?: string;
-  clientSecret?: string;
+  tokenAcesso?: string;
 }
 
 export { ICreateDonatePointDTO };

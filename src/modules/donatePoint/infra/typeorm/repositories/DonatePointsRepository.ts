@@ -23,8 +23,7 @@ class DonatePointsRepository implements IDonatePointsRepository {
     cep,
     referenciaEndereco,
     descricao,
-    clientId,
-    clientSecret,
+    tokenAcesso,
   }: ICreateDonatePointDTO): Promise<DonatePoint> {
     const donatePoint = this.repository.create({
       tipo_ponto_doacao: tipoPontoDoacao,
@@ -37,8 +36,7 @@ class DonatePointsRepository implements IDonatePointsRepository {
       cep,
       referencia_endereco: referenciaEndereco,
       descricao,
-      client_id: clientId,
-      client_secret: clientSecret,
+      token_acesso: tokenAcesso,
     });
 
     await this.repository.save(donatePoint);
@@ -46,8 +44,10 @@ class DonatePointsRepository implements IDonatePointsRepository {
     return donatePoint;
   }
 
-  async findByClientId(clientId: string): Promise<DonatePoint> {
-    const donatePoint = await this.repository.findOne({ client_id: clientId });
+  async findByTokenAcesso(tokenAcesso: string): Promise<DonatePoint> {
+    const donatePoint = await this.repository.findOne({
+      token_acesso: tokenAcesso,
+    });
     return donatePoint;
   }
 
