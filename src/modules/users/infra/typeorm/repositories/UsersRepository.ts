@@ -1,6 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 
 import { ICreateUserDTO } from "@modules/users/dtos/ICreateUserDTO";
+import { IFindUsersWhereDTO } from "@modules/users/dtos/IFindUsersWhereDTO";
 import { IUserResponseDTO } from "@modules/users/dtos/IUserResponseDTO";
 import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 
@@ -60,6 +61,14 @@ class UsersRepository implements IUsersRepository {
   async findById(id: string): Promise<IUserResponseDTO> {
     const user = await this.repository.findOne(id);
     return user;
+  }
+
+  async findAll(where: IFindUsersWhereDTO): Promise<IUserResponseDTO[]> {
+    const users = await this.repository.find({
+      relations: ["biometrias", "biometrias.ponto_doacao"],
+      where,
+    });
+    return users;
   }
 }
 

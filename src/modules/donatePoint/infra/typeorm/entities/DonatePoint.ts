@@ -2,10 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
+
+import { UserBiometry } from "@modules/users/infra/typeorm/entities/UserBiometry";
 
 @Entity("pontos_doacao")
 class DonatePoint {
@@ -42,7 +46,7 @@ class DonatePoint {
   @Column()
   descricao: string;
 
-  @Column()
+  @Column({ select: false })
   token_acesso: string;
 
   @Column()
@@ -53,6 +57,10 @@ class DonatePoint {
 
   @UpdateDateColumn()
   atualizado_em: Date;
+
+  @OneToMany(() => UserBiometry, (biometria) => biometria.ponto_doacao)
+  @JoinColumn({ name: "id_ponto_doacao", referencedColumnName: "id" })
+  biometrias: UserBiometry[];
 
   constructor() {
     if (!this.id) {

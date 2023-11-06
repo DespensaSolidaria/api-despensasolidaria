@@ -28,7 +28,7 @@ class UserBiometry {
   @Column()
   id_ponto_doacao: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => DonatePoint)
   @JoinColumn({ name: "id_ponto_doacao" })
   ponto_doacao: DonatePoint;
 

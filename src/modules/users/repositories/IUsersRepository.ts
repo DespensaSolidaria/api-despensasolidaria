@@ -1,4 +1,5 @@
 import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
+import { IFindUsersWhereDTO } from "../dtos/IFindUsersWhereDTO";
 import { IUserResponseDTO } from "../dtos/IUserResponseDTO";
 
 interface IUsersRepository {
@@ -8,6 +9,7 @@ interface IUsersRepository {
   findByEmail(email: string): Promise<IUserResponseDTO>;
   findByDocument(cpfcnpj: string): Promise<IUserResponseDTO>;
   findById(id: string): Promise<IUserResponseDTO>;
+  findAll(where: IFindUsersWhereDTO): Promise<IUserResponseDTO[]>;
 }
 
 export { IUsersRepository };

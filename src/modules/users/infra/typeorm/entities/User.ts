@@ -2,10 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
+
+import { UserBiometry } from "./UserBiometry";
 
 @Entity("usuarios")
 class User {
@@ -41,6 +45,10 @@ class User {
 
   @UpdateDateColumn()
   atualizado_em: Date;
+
+  @OneToMany(() => UserBiometry, (biometria) => biometria.usuario)
+  @JoinColumn({ name: "id_usuario", referencedColumnName: "id" })
+  biometrias: UserBiometry[];
 
   constructor() {
     if (!this.id) {

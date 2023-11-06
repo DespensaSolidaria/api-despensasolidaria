@@ -1,6 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 
 import { ICreateDonatePointDTO } from "@modules/donatePoint/dtos/ICreateDonatePointDTO";
+import { IFindDonatePointsWhereDTO } from "@modules/donatePoint/dtos/IFindDonatePointsWhereDTO";
 import { IDonatePointsRepository } from "@modules/donatePoint/repositories/IDonatePointsRepository";
 
 import { DonatePoint } from "../entities/DonatePoint";
@@ -54,6 +55,21 @@ class DonatePointsRepository implements IDonatePointsRepository {
   async findById(id: string): Promise<DonatePoint> {
     const donatePoint = await this.repository.findOne(id);
     return donatePoint;
+  }
+
+  async findByIdWithRelations(id: string): Promise<DonatePoint> {
+    const donatePoint = await this.repository.findOne(id, {
+      relations: ["biometrias", "biometrias.usuario"],
+    });
+    return donatePoint;
+  }
+
+  async findAll(where: IFindDonatePointsWhereDTO): Promise<DonatePoint[]> {
+    const users = await this.repository.find({
+      relations: [],
+      where,
+    });
+    return users;
   }
 }
 
